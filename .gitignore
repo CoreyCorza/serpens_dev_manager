@@ -1,0 +1,19 @@
+# Tauri build artifacts
+src-tauri/target/
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Node
+node_modules/
+
+# Gemini cache
+.gemini/

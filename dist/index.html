@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Corzas Serpens Dev Manager - Manage your Serpens scripting nodes installations">
+    <title>Corzas Serpens Dev Manager</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <div class="logo-section">
+                    <div class="logo-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 2L2 7l10 5 10-5-10-5z" />
+                            <path d="M2 17l10 5 10-5" />
+                            <path d="M2 12l10 5 10-5" />
+                        </svg>
+                    </div>
+                    <div class="logo-text">
+                        <h1>Corzas Serpens Dev Manager</h1>
+                        <span class="version-badge">v1.0.0</span>
+                    </div>
+                </div>
+                <div class="header-actions">
+                    <button class="btn btn-icon" id="refreshBtn" title="Refresh branches">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M23 4v6h-6" />
+                            <path d="M1 20v-6h6" />
+                            <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15" />
+                        </svg>
+                    </button>
+                    <button class="btn btn-icon" id="settingsBtn" title="Settings">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="3" />
+                            <path
+                                d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Status Panel -->
+            <section class="panel status-panel">
+                <div class="panel-header">
+                    <h2>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+                            <polyline points="22 4 12 14.01 9 11.01" />
+                        </svg>
+                        Current Installation
+                    </h2>
+                </div>
+                <div class="panel-content">
+                    <div class="status-grid">
+                        <div class="status-item">
+                            <span class="status-label">Status</span>
+                            <span class="status-value" id="installStatus">
+                                <span class="status-indicator loading"></span>
+                                Checking...
+                            </span>
+                        </div>
+                        <div class="status-item">
+                            <span class="status-label">Blender Version</span>
+                            <span class="status-value" id="blenderVersion">Detecting...</span>
+                        </div>
+                        <div class="status-item">
+                            <span class="status-label">Current Branch</span>
+                            <span class="status-value" id="currentBranch">—</span>
+                        </div>
+                        <div class="status-item">
+                            <span class="status-label">Last Updated</span>
+                            <span class="status-value" id="lastUpdated">—</span>
+                        </div>
+                    </div>
+                    <div class="status-path">
+                        <span class="status-label">Installation Path</span>
+                        <div class="path-display" id="installPath">
+                            <code>Loading...</code>
+                            <button class="btn btn-ghost btn-sm" id="openFolderBtn" title="Open folder">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path
+                                        d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z" />
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Install Panel (only shown when not installed) -->
+            <section class="panel install-panel" id="installPanel" style="display: none;">
+                <div class="panel-header">
+                    <h2>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                            <polyline points="7 10 12 15 17 10" />
+                            <line x1="12" y1="15" x2="12" y2="3" />
+                        </svg>
+                        Get Started
+                    </h2>
+                </div>
+                <div class="panel-content">
+                    <p style="color: var(--text-secondary); margin-bottom: var(--space-md);">
+                        No Serpens installation detected. Click below to install the development version.
+                    </p>
+                    <button class="btn btn-primary btn-lg" id="installBtn" style="width: 100%;">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                            <polyline points="7 10 12 15 17 10" />
+                            <line x1="12" y1="15" x2="12" y2="3" />
+                        </svg>
+                        Install Serpens (personal-dev)
+                    </button>
+                </div>
+            </section>
+
+            <!-- Branches Panel -->
+            <section class="panel branches-panel">
+                <div class="panel-header">
+                    <h2>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="6" y1="3" x2="6" y2="15" />
+                            <circle cx="18" cy="6" r="3" />
+                            <circle cx="6" cy="18" r="3" />
+                            <path d="M18 9a9 9 0 0 1-9 9" />
+                        </svg>
+                        Available Branches
+                    </h2>
+                    <div class="search-box">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="11" cy="11" r="8" />
+                            <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                        </svg>
+                        <input type="text" id="branchSearch" placeholder="Search branches...">
+                    </div>
+                </div>
+                <div class="panel-content">
+                    <div class="branches-list" id="branchesList">
+                        <div class="loading-state">
+                            <div class="spinner"></div>
+                            <span>Fetching branches from GitHub...</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Console/Log Panel -->
+        <aside class="console-panel" id="consolePanel">
+            <div class="console-header">
+                <h3>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="4 17 10 11 4 5" />
+                        <line x1="12" y1="19" x2="20" y2="19" />
+                    </svg>
+                    Console Output
+                </h3>
+                <div class="console-actions">
+                    <button class="btn btn-ghost btn-sm" id="clearConsoleBtn" title="Clear console">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="3 6 5 6 21 6" />
+                            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+                        </svg>
+                    </button>
+                    <button class="btn btn-ghost btn-sm" id="toggleConsoleBtn" title="Toggle console">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="6 9 12 15 18 9" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            <div class="console-content" id="consoleContent">
+                <div class="console-line info">
+                    <span class="timestamp">[--:--:--]</span>
+                    <span class="message">Welcome to Serpens Dev Manager! Ready to manage your installation.</span>
+                </div>
+            </div>
+        </aside>
+    </div>
+
+    <!-- Confirmation Modal -->
+    <div class="modal-overlay" id="confirmModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 id="modalTitle">Confirm Action</h3>
+                <button class="btn btn-ghost btn-sm modal-close" id="modalClose">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="6" x2="6" y2="18" />
+                        <line x1="6" y1="6" x2="18" y2="18" />
+                    </svg>
+                </button>
+            </div>
+            <div class="modal-content">
+                <p id="modalMessage">Are you sure you want to proceed?</p>
+                <div class="modal-warning" id="modalWarning">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path
+                            d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />
+                        <line x1="12" y1="9" x2="12" y2="13" />
+                        <line x1="12" y1="17" x2="12.01" y2="17" />
+                    </svg>
+                    <span>This will overwrite your current installation!</span>
+                </div>
+            </div>
+            <div class="modal-actions">
+                <button class="btn btn-ghost" id="modalCancel">Cancel</button>
+                <button class="btn btn-primary" id="modalConfirm">Confirm</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Settings Modal -->
+    <div class="modal-overlay" id="settingsModal">
+        <div class="modal modal-lg">
+            <div class="modal-header">
+                <h3>Settings</h3>
+                <button class="btn btn-ghost btn-sm modal-close" id="settingsClose">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="6" x2="6" y2="18" />
+                        <line x1="6" y1="6" x2="18" y2="18" />
+                    </svg>
+                </button>
+            </div>
+            <div class="modal-content">
+                <div class="settings-group">
+                    <label class="settings-label">Blender Version</label>
+                    <select class="settings-select" id="blenderVersionSelect">
+                        <option value="5.0">Blender 5.0</option>
+                        <option value="4.3">Blender 4.3</option>
+                        <option value="4.2">Blender 4.2</option>
+                        <option value="4.1">Blender 4.1</option>
+                        <option value="4.0">Blender 4.0</option>
+                    </select>
+                    <span class="settings-hint">Select the Blender version you're using</span>
+                </div>
+                <div class="settings-group">
+                    <label class="settings-label">Custom Addons Path</label>
+                    <div class="settings-input-group">
+                        <input type="text" class="settings-input" id="customPath"
+                            placeholder="Leave empty to use default">
+                        <button class="btn btn-ghost" id="browsePathBtn">Browse</button>
+                    </div>
+                    <span class="settings-hint">Override the default Blender addons folder location</span>
+                </div>
+                <div class="settings-group">
+                    <label class="settings-label">
+                        <input type="checkbox" id="autoBackup" checked>
+                        Auto-backup before switching branches
+                    </label>
+                    <span class="settings-hint">Automatically create a backup before any branch switch</span>
+                </div>
+            </div>
+            <div class="modal-actions">
+                <button class="btn btn-ghost" id="settingsCancel">Cancel</button>
+                <button class="btn btn-primary" id="settingsSave">Save Settings</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+
+</html>
