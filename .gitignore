@@ -17,3 +17,6 @@ node_modules/
 
 # Gemini cache
 .gemini/
+
+# Development notes (keep local only)
+AGENTS.md
